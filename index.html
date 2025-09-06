@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>24시간 무한 카운트다운</title>
+  <style>
+    body { font-family: Arial, sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; background:#f9f9f9; margin:0; }
+    .timer { text-align:center; }
+    .time { font-size: 80px; font-weight: bold; letter-spacing: 3px; }
+    .sub { margin-top:10px; color:#555; }
+  </style>
+</head>
+<body>
+  <div class="timer">
+    <div id="display" class="time">24:00:00</div>
+    <div class="sub">24시간 카운트다운 (무한 반복)</div>
+  </div>
+
+  <script>
+    const DURATION = 24 * 60 * 60 * 1000; // 24시간(밀리초)
+    let endTime = Date.now() + DURATION;
+
+    function format(ms) {
+      let totalSec = Math.floor(ms / 1000);
+      let h = Math.floor(totalSec / 3600);
+      let m = Math.floor((totalSec % 3600) / 60);
+      let s = totalSec % 60;
+      return (
+        String(h).padStart(2, '0') + ":" +
+        String(m).padStart(2, '0') + ":" +
+        String(s).padStart(2, '0')
+      );
+    }
+
+    function update() {
+      let now = Date.now();
+      let remaining = endTime - now;
+
+      if (remaining <= 0) {
+        // 다시 24시간 시작
+        endTime = Date.now() + DURATION;
+        remaining = DURATION;
+      }
+
+      document.getElementById("display").textContent = format(remaining);
+    }
+
+    // 1초마다 업데이트
+    setInterval(update, 1000);
+    update();
+  </script>
+</body>
+</html>
